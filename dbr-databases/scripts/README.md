@@ -3,8 +3,8 @@
 Python scripts used for DB manipulation and data creation. 
 
 The script populate_sources.py is used to generate fake data for the databases bellow:
-- db1, inside the container mysql_source1
-- db2, inside the container mysql_source2
+- db1, inside the image mysql_source1
+- db2, inside the image mysql_source2
 
 ## 🚀 Usage
 

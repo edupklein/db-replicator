@@ -42,8 +42,8 @@ db1, db2, db_target
 
 ## Structure
 
-1. When running the docker compose file, the sql commands inside dbr-databases/sql/init will create 2 tables in each database, tables:
-    - clients
-    - users
-1. Initially the tables will have no data. To generate data, you can use the backup files inside 'data' folder and follow the README file inside this folder.
-1. Or alternatively you can run a Python script the generate fake data. To do this, navigate to the 'scripts' folder and follow the README file inside this folder.
+1. When running the docker compose file, the sql commands inside `dbr-databases/sql/init` will create 2 tables in each database, tables:
+    - `clients`
+    - `users`
+1. Initially the tables will have no data. To generate data, you can use the backup files inside `data` folder and follow the README file inside this folder.
+1. Or alternatively you can run a Python script the generate fake data. To do this, navigate to the `scripts` folder and follow the README file inside this folder.
