@@ -1,4 +1,3 @@
--- Active: 1755541643694@@127.0.0.1@3309@db_target
 use db_target;
 select *
 from clients

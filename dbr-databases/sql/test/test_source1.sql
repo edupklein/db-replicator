@@ -1,4 +1,3 @@
--- Active: 1755541408006@@127.0.0.1@3307@db1
 use db1;
 select *
 from clients
