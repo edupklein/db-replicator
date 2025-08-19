@@ -24,8 +24,8 @@ cursor2 = conn2.cursor()
 fake = Faker('en_US')
 
 # Total quantity of records to be created
-total_clients = 10_000_000
-total_users = 10_000_000
+total_clients = 12_000_000
+total_users = 12_000_000
 batch_size = 5000
 
 # ========================
