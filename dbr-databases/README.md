@@ -25,17 +25,17 @@ This docker compose file uses the `mysql:8.0` image to create 3 mysql images wit
 ## 🚀 Usage
 
 1. Clone the repository:
-   ```bash
-       git clone https://github.com/edupklein/db-replicator.git
-   ```
+    ```bash
+    git clone https://github.com/edupklein/db-replicator.git
+    ```
 1. Navigate to the project directory:
-   ```bash
-   cd dbr-databases
-   ```
+    ```bash
+    cd dbr-databases
+    ```
 1. Run docker the docker image:
     ```bash
-   docker compose up -d
-   ```
+    docker compose up -d
+    ```
 
 Databases started:
 db1, db2, db_target

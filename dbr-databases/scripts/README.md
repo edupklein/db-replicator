@@ -10,7 +10,7 @@ The script populate_sources.py is used to generate fake data for the databases b
 
 1. Clone the repository:
    ```bash
-       git clone https://github.com/edupklein/db-replicator.git
+   git clone https://github.com/edupklein/db-replicator.git
    ```
 1. Navigate to the project directory:
    ```bash
