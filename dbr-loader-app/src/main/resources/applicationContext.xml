@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans
+          https://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context
+          https://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/tx
+          https://www.springframework.org/schema/tx/spring-tx.xsd
+          http://www.springframework.org/schema/data/jpa
+          https://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+    <!-- Loads external database properties -->
+    <context:property-placeholder location="classpath:database.properties"/>
+
+    <!-- ==================== Database Source 1 ==================== -->
+    <bean id="dataSource1" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${db1.driver}" />
+        <property name="url" value="${db1.url}" />
+        <property name="username" value="${db1.username}" />
+        <property name="password" value="${db1.password}" />
+    </bean>
+
+    <!-- EntityManagerFactory db 1 -->
+    <bean id="entityManagerFactory1" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource1"/>
+        <property name="packagesToScan" value="com.eduardo.dbrloaderapp.model"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Transaction Manager db 1 -->
+    <bean id="transactionManager1" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory1"/>
+    </bean>
+
+    <!-- ==================== Database Source 2 ==================== -->
+    <bean id="dataSource2" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${db2.driver}" />
+        <property name="url" value="${db2.url}" />
+        <property name="username" value="${db2.username}" />
+        <property name="password" value="${db2.password}" />
+    </bean>
+
+    <!-- EntityManagerFactory db 2 -->
+    <bean id="entityManagerFactory2" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource2"/>
+        <property name="packagesToScan" value="com.eduardo.dbrloaderapp.model"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Transaction Manager db 2 -->
+    <bean id="transactionManager2" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory2"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager1"/>
+    <tx:annotation-driven transaction-manager="transactionManager2"/>
+
+    <!-- Enable JPA Repositories -->
+    <jpa:repositories base-package="com.eduardo.dbrloaderapp.repository"
+                      entity-manager-factory-ref="entityManagerFactory1"
+                      transaction-manager-ref="transactionManager1"/>
+    <jpa:repositories base-package="com.eduardo.dbrloaderapp.repository"
+                      entity-manager-factory-ref="entityManagerFactory2"
+                      transaction-manager-ref="transactionManager2"/>
+</beans>

@@ -1,7 +1,6 @@
-# 🗄️ DBR Producer Application
+# 🗄️ DBR Loader Application
 
 This is a Java Spring Application that produces and loads the source's database data sending it through the Kafka queue DB_LOAD
-
 
 ## 🚀 Usage
 
