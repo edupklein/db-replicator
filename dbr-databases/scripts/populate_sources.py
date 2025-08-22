@@ -24,16 +24,16 @@ cursor2 = conn2.cursor()
 fake = Faker('en_US')
 
 # Total quantity of records to be created
-total_clients = 12_000_000
-total_users = 12_000_000
+total_client = 12_000_000
+total_user = 12_000_000
 batch_size = 5000
 
 # ========================
-# Inserting CLIENTS
+# Inserting clients
 # ========================
 print("Inserting fake clients...")
 
-for _ in tqdm(range(total_clients // batch_size)):
+for _ in tqdm(range(total_client // batch_size)):
     data = []
     for _ in range(batch_size):
         name = fake.name()
@@ -45,12 +45,12 @@ for _ in tqdm(range(total_clients // batch_size)):
         data.append((name, email, phone, city, state, creation_date))
 
     cursor1.executemany("""
-        INSERT INTO clients (name, email, phone, city, state, creation_date)
+        INSERT INTO client (name, email, phone, city, state, creation_date)
         VALUES (%s, %s, %s, %s, %s, %s)
     """, data)
     conn1.commit()
 
-for _ in tqdm(range(total_clients // batch_size)):
+for _ in tqdm(range(total_client // batch_size)):
     data = []
     for _ in range(batch_size):
         name = fake.name()
@@ -62,43 +62,47 @@ for _ in tqdm(range(total_clients // batch_size)):
         data.append((name, email, phone, city, state, creation_date))
 
     cursor2.executemany("""
-        INSERT INTO clients (name, email, phone, city, state, creation_date)
+        INSERT INTO client (name, email, phone, city, state, creation_date)
         VALUES (%s, %s, %s, %s, %s, %s)
     """, data)
     conn2.commit()
 
 # ========================
-# Inserting USERS
+# Inserting users
 # ========================
 print("Inserting fake users...")
 
-for _ in tqdm(range(total_users // batch_size)):
+for _ in tqdm(range(total_user // batch_size)):
     data = []
     for _ in range(batch_size):
         username = fake.user_name()
         email = fake.email()
         password = fake.password(length=12)
+        city = fake.city()
+        state = fake.state_abbr()
         creation_date = fake.date_time_between(start_date='-2y', end_date='now')
-        data.append((username, email, password, creation_date))
+        data.append((username, email, password, city, state, creation_date))
 
     cursor1.executemany("""
-        INSERT INTO users (username, email, password, creation_date)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO user (username, email, password, city, state, creation_date)
+        VALUES (%s, %s, %s, %s, %s, %s)
     """, data)
     conn1.commit()
 
-for _ in tqdm(range(total_users // batch_size)):
+for _ in tqdm(range(total_user // batch_size)):
     data = []
     for _ in range(batch_size):
         username = fake.user_name()
         email = fake.email()
         password = fake.password(length=12)
+        city = fake.city()
+        state = fake.state_abbr()
         creation_date = fake.date_time_between(start_date='-2y', end_date='now')
-        data.append((username, email, password, creation_date))
+        data.append((username, email, password, city, state, creation_date))
 
     cursor2.executemany("""
-        INSERT INTO users (username, email, password, creation_date)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO user (username, email, password, city, state, creation_date)
+        VALUES (%s, %s, %s, %s, %s, %s)
     """, data)
     conn2.commit()
 

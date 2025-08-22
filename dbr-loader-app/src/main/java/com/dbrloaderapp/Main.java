@@ -1,4 +1,4 @@
-package com.eduardo.dbrloaderapp;
+package com.dbrloaderapp;
 
 public class Main {
     public static void main(String[] args) {
