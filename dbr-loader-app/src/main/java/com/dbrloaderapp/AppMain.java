@@ -2,10 +2,7 @@ package com.dbrloaderapp;
 
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import java.io.File;
@@ -32,16 +29,13 @@ public class AppMain {
         var ctx = tomcat.addContext("", base.getAbsolutePath());
 
         // Spring Context
-        AnnotationConfigWebApplicationContext springContext = new AnnotationConfigWebApplicationContext();
+        XmlWebApplicationContext springContext = new XmlWebApplicationContext();
         springContext.setConfigLocation("classpath:applicationContext.xml");
 
         // DispatcherServlet for REST API calls
         var dispatcher = new DispatcherServlet(springContext);
         Tomcat.addServlet(ctx, "dispatcher", dispatcher);
         ctx.addServletMappingDecoded("/api/*", "dispatcher");
-
-        // ContextLoaderListener (Spring)
-        ctx.addApplicationListener("org.springframework.web.context.ContextLoaderListener");
 
         // Starts embedded Tomcat Server
         tomcat.start();
