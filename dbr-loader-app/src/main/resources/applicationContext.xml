@@ -14,8 +14,15 @@
           http://www.springframework.org/schema/data/jpa
           https://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-    <!-- Loads external database properties -->
-    <context:property-placeholder location="classpath:database.properties"/>
+    <!-- Loads external application properties -->
+    <context:property-placeholder location="classpath:application.properties"/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:application.properties"/>
+    </bean>
+
+    <!-- Allows component scan-->
+    <context:component-scan base-package="com.dbrloaderapp"/>
 
     <!-- ==================== Database Source 1 ==================== -->
     <bean id="dataSource1" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -28,7 +35,7 @@
     <!-- EntityManagerFactory db 1 -->
     <bean id="entityManagerFactory1" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource1"/>
-        <property name="packagesToScan" value="com.eduardo.dbrloaderapp.model"/>
+        <property name="packagesToScan" value="com.dbrloaderapp.model"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
@@ -58,7 +65,7 @@
     <!-- EntityManagerFactory db 2 -->
     <bean id="entityManagerFactory2" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource2"/>
-        <property name="packagesToScan" value="com.eduardo.dbrloaderapp.model"/>
+        <property name="packagesToScan" value="com.dbrloaderapp.model"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
@@ -81,10 +88,24 @@
     <tx:annotation-driven transaction-manager="transactionManager2"/>
 
     <!-- Enable JPA Repositories -->
-    <jpa:repositories base-package="com.eduardo.dbrloaderapp.repository"
+    <jpa:repositories base-package="com.dbrloaderapp.repository"
                       entity-manager-factory-ref="entityManagerFactory1"
                       transaction-manager-ref="transactionManager1"/>
-    <jpa:repositories base-package="com.eduardo.dbrloaderapp.repository"
+    <jpa:repositories base-package="com.dbrloaderapp.repository"
                       entity-manager-factory-ref="entityManagerFactory2"
                       transaction-manager-ref="transactionManager2"/>
+
+    <bean id="producerFactory" class="org.springframework.kafka.core.DefaultKafkaProducerFactory">
+        <constructor-arg>
+            <map>
+                <entry key="bootstrap.servers" value="${kafka.bootstrap.servers}"/>
+                <entry key="key.serializer" value="org.apache.kafka.common.serialization.StringSerializer"/>
+                <entry key="value.serializer" value="org.apache.kafka.common.serialization.StringSerializer"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="kafkaTemplate" class="org.springframework.kafka.core.KafkaTemplate">
+        <constructor-arg ref="producerFactory"/>
+    </bean>
 </beans>
