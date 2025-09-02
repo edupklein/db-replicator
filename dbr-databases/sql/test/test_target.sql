@@ -1,15 +1,15 @@
 use db_target;
 select *
-from clients
+from client;
 
 select count(id)
-from clients
+from client;
 
 select *
-from users
+from user;
 
 select count(id)
-from users
+from user;
 
 SELECT 
     table_schema AS database_name,
